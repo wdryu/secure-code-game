@@ -18,4 +18,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check for insecure actions
-        run: | STATUS=$(curl -s https://www.githubstatus.com/api/v2/status.json | jq -r '.status.description') echo "GitHub Status: $STATUS"
+        run: | 
+          if grep -q "uses: dduzgun-security/secure-code-game-action@" $GITHUB_WORKSPACE/.github/workflows/jarvis-code.yml; then
+            echo "Insecure action detected. Please remove it from your workflow."
+            exit 1
+          fi
